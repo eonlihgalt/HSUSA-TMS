@@ -4,18 +4,28 @@ import path from "path";
 let mainWindow: BrowserWindow | null = null;
 
 function createMainWindow(): void {
+
+    const preloadPath = path.join(
+        __dirname,
+        "../preload/preload.js"
+    );
+
+    console.log("Preload Path:", preloadPath);
+
     mainWindow = new BrowserWindow({
         width: 1400,
         height: 900,
         title: "HSUSA Training Management System",
         webPreferences: {
-            preload: path.join(__dirname, "../preload/preload.js"),
+            preload: preloadPath,
             contextIsolation: true,
             nodeIntegration: false
         }
     });
 
-    mainWindow.loadURL("http://localhost:5174");
+    mainWindow.loadURL(
+        "http://localhost:5173"
+    );
 
     mainWindow.on("closed", () => {
         mainWindow = null;

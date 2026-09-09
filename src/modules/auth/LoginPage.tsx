@@ -18,6 +18,9 @@ export default function LoginPage() {
         password: string
     ) {
         console.log("LOGIN CLICKED");
+        console.log(
+            "Attempting IPC Login"
+        );
         const result =
             await loginService.login({
 

@@ -1,27 +1,56 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
+const {
+    registerAuthenticationHandlers
+} = require(
+    "./electron/main/auth-handler"
+);
+
 let mainWindow = null;
 
 function createMainWindow() {
+
+    const preloadPath = path.join(
+        __dirname,
+        "electron",
+        "preload",
+        "preload.js"
+    );
+
+    console.log(
+        "Using preload:",
+        preloadPath
+    );
+
     mainWindow = new BrowserWindow({
         width: 1400,
         height: 900,
         title: "HSUSA Training Management System",
+
         webPreferences: {
+            preload: preloadPath,
             contextIsolation: true,
             nodeIntegration: false
         }
     });
 
-    mainWindow.loadURL("http://localhost:5174");
+    mainWindow.loadURL(
+        "http://localhost:5173"
+    );
 
-    mainWindow.on("closed", () => {
-        mainWindow = null;
-    });
+    mainWindow.on(
+        "closed",
+        () => {
+            mainWindow = null;
+        }
+    );
 }
 
 app.whenReady().then(() => {
+
+    registerAuthenticationHandlers();
+
     createMainWindow();
 });
 

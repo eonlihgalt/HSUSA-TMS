@@ -10,30 +10,14 @@ export class LoginService {
         request: LoginRequest
     ): Promise<LoginResponse> {
 
-//      //
-//      // TEMPORARY MOCK
-//      //
-//      // Replace during IPC-001
-//      // when AuthenticationService is exposed
-//      // through Electron IPC.
-//      //   request: LoginRequest
-//  ): Promise<LoginResponse> {
-//
-//     const result =
-//          await authenticationService.login(
-//              request.username,
-//              request.password
-//          );
-//
-//      return {
-//          success: result.success,
-//          message: result.message
-//      };
-//      //
+        const result =
+            await window.hsusa.login(
 
-        return {
-            success: true,
-            message: "Login successful"
-        };
+                request.username,
+
+                request.password
+            );
+
+        return result;
     }
 }
