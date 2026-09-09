@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  email        String?
+  status       UserStatus
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userRoles    UserRole[]
+}
+
+model Role {
+  id          String @id @default(uuid())
+  roleName    String @unique
+  description String?
+
+  userRoles   UserRole[]
+}
+
+model UserRole {
+  id      String @id @default(uuid())
+
+  userId  String
+  roleId  String
+
+  user    User @relation(fields: [userId], references: [id])
+  role    Role @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId], name: "userId_roleId")
+}
+
+model Configuration {
+  id          String @id @default(uuid())
+
+  key         String @unique
+  value       String
+
+  description String?
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+
+  entity    String
+  action    String
+
+  timestamp DateTime @default(now())
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  LOCKED
+}
