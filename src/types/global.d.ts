@@ -19,6 +19,8 @@ declare global {
 
                 message: string;
             }>;
+
+            getUsers: () => Promise<any[]>;
         };
     }
 }

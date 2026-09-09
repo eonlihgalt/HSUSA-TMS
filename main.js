@@ -7,6 +7,12 @@ const {
     "./electron/main/auth-handler"
 );
 
+const {
+    registerUserHandlers
+} = require(
+    "./electron/main/user-handler"
+);
+
 let mainWindow = null;
 
 function createMainWindow() {
@@ -48,6 +54,8 @@ function createMainWindow() {
 }
 
 app.whenReady().then(() => {
+
+    registerUserHandlers();
 
     registerAuthenticationHandlers();
 

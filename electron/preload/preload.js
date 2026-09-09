@@ -6,6 +6,14 @@ const {
 contextBridge.exposeInMainWorld(
     "hsusa",
     {
+
+        getUsers: async () => {
+
+            return await ipcRenderer.invoke(
+                "users-get-all"
+            );
+        },
+
         applicationName: "HSUSA TMS",
 
         version: "1.0.0",
