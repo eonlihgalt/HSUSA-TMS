@@ -1,8 +1,6 @@
-import { PrismaClient }
-from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
-import { AuthorizationService }
-from "./AuthorizationService";
+import { AuthorizationService } from "./AuthorizationService";
 
 const prisma =
     new PrismaClient();

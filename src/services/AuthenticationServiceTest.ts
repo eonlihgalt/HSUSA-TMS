@@ -1,5 +1,4 @@
-import { AuthenticationService }
-from "./AuthenticationService";
+import { AuthenticationService } from "./AuthenticationService";
 
 async function run() {
 
