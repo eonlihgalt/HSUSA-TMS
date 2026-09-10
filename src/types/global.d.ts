@@ -20,6 +20,10 @@ declare global {
                 message: string;
             }>;
 
+            getUserById: (
+                userId: string
+            ) => Promise<any>;
+
             getUsers: () => Promise<any[]>;
         };
     }

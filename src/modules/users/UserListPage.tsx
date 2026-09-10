@@ -4,10 +4,21 @@ from "react";
 import { UserService }
 from "./UserService";
 
+import UserDetailPage from "./UserDetailPage";
+
+
+
 const userService =
     new UserService();
 
 export default function UserListPage() {
+
+    const [
+        selectedUser,
+        setSelectedUser
+    ] = useState<string | null>(
+        null
+    );
 
     const [users, setUsers] =
         useState<any[]>([]);
@@ -17,6 +28,16 @@ export default function UserListPage() {
         loadUsers();
 
     }, []);
+
+    if (selectedUser) {
+
+        return (
+            <UserDetailPage
+                userId={selectedUser}
+           />
+       );
+    }
+
 
     async function loadUsers() {
 
@@ -64,24 +85,27 @@ export default function UserListPage() {
                                 key={user.id}
                             >
 
-                                <td>{user.username}</td>
+                                <td>
+                                    <button
+                                        onClick={() =>
+                                            setSelectedUser(
+                                                user.id
+                                            )
+                                        }
+                                    >
+                                        {user.username}
+                                    </button>
+                                </td>
 
                                 <td>{user.firstName}</td>
-
                                 <td>{user.lastName}</td>
-
                                 <td>{user.email}</td>
-
                                 <td>{user.status}</td>
-
                             </tr>
                         )
                     )}
-
                 </tbody>
-
             </table>
-
         </div>
     );
 }

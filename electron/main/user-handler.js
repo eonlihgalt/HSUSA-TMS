@@ -19,6 +19,31 @@ function registerUserHandlers() {
             });
         }
     );
+
+    ipcMain.handle(
+        "users-get-by-id",
+
+        async (
+            event,
+            userId
+        ) => {
+
+            return await prisma.user.findUnique({
+
+                where: {
+                    id: userId
+                },
+
+                include: {
+                    userRoles: {
+                        include: {
+                            role: true
+                        }
+                    }
+                }
+            });
+        }
+    );
 }
 
 module.exports = {

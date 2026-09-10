@@ -2,13 +2,20 @@ import { useState } from "react";
 
 import LoginForm from "./LoginForm";
 
+interface Props {
+    onLoginSuccess: () => void;
+}
+
 import { LoginService }
     from "./LoginService";
+
 
 const loginService =
     new LoginService();
 
-export default function LoginPage() {
+export default function LoginPage(
+    props: Props
+) {
 
     const [message, setMessage] =
         useState("");
@@ -32,6 +39,10 @@ export default function LoginPage() {
         setMessage(
             result.message
         );
+        if (result.success) {
+
+             props.onLoginSuccess();
+        }
     }
 
     return (

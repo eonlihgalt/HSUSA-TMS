@@ -7,6 +7,16 @@ contextBridge.exposeInMainWorld(
     "hsusa",
     {
 
+        getUserById: async (
+             userId
+        ) => {
+
+            return await ipcRenderer.invoke(
+               "users-get-by-id",
+               userId
+            );
+        },
+
         getUsers: async () => {
 
             return await ipcRenderer.invoke(

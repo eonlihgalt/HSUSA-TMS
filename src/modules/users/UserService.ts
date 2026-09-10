@@ -4,4 +4,12 @@ export class UserService {
 
         return await window.hsusa.getUsers();
     }
+    async getUserById(
+        userId: string
+    ) {
+
+        return await window.hsusa.getUserById(
+         userId
+      );
+    }
 }
