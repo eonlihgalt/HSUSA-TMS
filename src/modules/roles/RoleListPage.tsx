@@ -7,6 +7,10 @@ from "react";
 import { RoleService }
 from "./RoleService";
 
+import RoleDetailPage
+    from "./RoleDetailPage";
+
+
 const roleService =
     new RoleService();
 
@@ -21,6 +25,15 @@ export default function RoleListPage() {
 
     }, []);
 
+    const [
+        selectedRole,
+       setSelectedRole
+    ] = useState<string | null>(
+       null
+    );
+
+
+
     async function loadRoles() {
 
         const data =
@@ -28,6 +41,17 @@ export default function RoleListPage() {
 
         setRoles(data);
     }
+
+    if (selectedRole) {
+
+        return (
+            <RoleDetailPage
+               roleId={selectedRole}
+         />
+      );
+    }
+
+
 
     return (
 
@@ -64,6 +88,15 @@ export default function RoleListPage() {
                                 key={role.id}
                             >
 
+                                <td>
+                                    <button
+                                        onClick={() =>
+                                            setSelectedRole(role.id)
+                                        }
+                                    >
+                                        {role.roleName}
+                                    </button>
+                                </td>
                                 <td>
                                     {role.roleName}
                                 </td>
