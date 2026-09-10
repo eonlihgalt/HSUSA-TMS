@@ -34,6 +34,9 @@ export default function UserListPage() {
         return (
             <UserDetailPage
                 userId={selectedUser}
+                onBack={() =>
+                    setSelectedUser(null)
+                }
            />
        );
     }

@@ -10,6 +10,7 @@ from "./UserService";
 interface Props {
 
     userId: string;
+    onBack: () => void;
 }
 
 const userService =
@@ -59,6 +60,14 @@ export default function UserDetailPage(
                 User Detail
             </h1>
 
+            <button
+               onClick={() =>
+                    props.onBack()
+               }
+            >
+                Back To User List
+            </button>
+
             <p>
                 Username:
                 {user.username}
@@ -90,7 +99,7 @@ export default function UserDetailPage(
 
             <ul>
 
-                {user.userRoles.map(
+                {user.userRoles?.map(
                     (role: any) => (
 
                         <li

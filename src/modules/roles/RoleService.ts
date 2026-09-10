@@ -12,5 +12,22 @@ export class RoleService {
         return await window.hsusa.getRoleById(
             roleId
         );
+
     }
+
+    async createRole(
+        roleName: string,
+        description: string
+    ) {
+
+        return await window.hsusa.createRole({
+          roleName,
+            description
+     });
+    }
+
+
+
+
+
 }

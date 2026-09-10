@@ -41,6 +41,17 @@ contextBridge.exposeInMainWorld(
              );
             },
 
+        createRole: async (
+           role
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "roles-create",
+                role
+           );
+        },
+
+
         applicationName: "HSUSA TMS",
 
         version: "1.0.0",

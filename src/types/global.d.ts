@@ -32,6 +32,15 @@ declare global {
              roleId: string
             ) => Promise<any>;
 
+            createRole: (
+                role: {
+                    roleName: string;
+                    description: string;
+                }
+            ) => Promise<any>;
+
+
+
         };
     }
 }
