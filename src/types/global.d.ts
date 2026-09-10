@@ -25,6 +25,13 @@ declare global {
             ) => Promise<any>;
 
             getUsers: () => Promise<any[]>;
+
+            getRoles: () => Promise<any[]>;
+
+            getRoleById: (
+             roleId: string
+            ) => Promise<any>;
+
         };
     }
 }

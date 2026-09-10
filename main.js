@@ -13,6 +13,13 @@ const {
     "./electron/main/user-handler"
 );
 
+const {
+    registerRoleHandlers
+} = require(
+    "./electron/main/role-handler"
+);
+
+
 let mainWindow = null;
 
 function createMainWindow() {
@@ -58,6 +65,8 @@ app.whenReady().then(() => {
     registerUserHandlers();
 
     registerAuthenticationHandlers();
+
+    registerRoleHandlers();
 
     createMainWindow();
 });

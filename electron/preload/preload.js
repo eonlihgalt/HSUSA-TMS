@@ -24,6 +24,23 @@ contextBridge.exposeInMainWorld(
             );
         },
 
+        getRoles: async () => {
+
+               return await ipcRenderer.invoke(
+                    "roles-get-all"
+             );
+            },
+
+            getRoleById: async (
+               roleId
+            ) => {
+
+               return await ipcRenderer.invoke(
+                  "roles-get-by-id",
+                 roleId
+             );
+            },
+
         applicationName: "HSUSA TMS",
 
         version: "1.0.0",
