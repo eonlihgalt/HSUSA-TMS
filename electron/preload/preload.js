@@ -59,6 +59,17 @@ contextBridge.exposeInMainWorld(
             );
         },
 
+        deleteRole: async (
+            roleId
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "roles-delete",
+                roleId
+            );
+        },
+
+
         applicationName: "HSUSA TMS",
 
         version: "1.0.0",

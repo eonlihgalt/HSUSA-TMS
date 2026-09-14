@@ -48,6 +48,10 @@ declare global {
                 }
             ) => Promise<any>;
 
+            deleteRole: (
+                roleId: string
+            ) => Promise<any>;
+
 
 
         };

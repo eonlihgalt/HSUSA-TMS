@@ -121,8 +121,28 @@ function registerRoleHandlers() {
         };
         }
     );
-}
+        ipcMain.handle(
+            "roles-delete",
 
+            async (
+                event,
+                roleId
+            ) => {
+
+                await prisma.role.delete({
+
+                    where: {
+                        id: roleId
+                    }
+                });
+
+                return {
+                    success: true
+                };
+            }
+        );
+ 
+    };  
 module.exports = {
     registerRoleHandlers
 };

@@ -42,6 +42,14 @@ export class RoleService {
         });
     }
 
+    async deleteRole(
+        roleId: string
+    ) {
+
+        return await window.hsusa.deleteRole(
+            roleId
+        );
+    }
+    }
 
 
-}

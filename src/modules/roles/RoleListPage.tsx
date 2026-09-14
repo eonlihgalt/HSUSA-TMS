@@ -41,9 +41,10 @@ export default function RoleListPage() {
         return (
             <RoleDetailPage
                 roleId={selectedRole}
-                onBack={() =>
+                onBack={() => { 
                     setSelectedRole(null)
-                }
+                    loadRoles();
+                }}
             />
         );
     }
