@@ -26,7 +26,21 @@ export class RoleService {
      });
     }
 
+    async updateRole(
+        id: string,
+        roleName: string,
+        description: string
+    ) {
 
+        return await window.hsusa.updateRole({
+
+            id,
+
+            roleName,
+
+            description
+        });
+    }
 
 
 

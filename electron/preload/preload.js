@@ -42,15 +42,22 @@ contextBridge.exposeInMainWorld(
             },
 
         createRole: async (
-           role
+            role
         ) => {
-
             return await ipcRenderer.invoke(
                 "roles-create",
                 role
-           );
+            );
         },
 
+        updateRole: async (
+            role
+        ) => {
+            return await ipcRenderer.invoke(
+                "roles-update",
+                role
+            );
+        },
 
         applicationName: "HSUSA TMS",
 
@@ -60,7 +67,6 @@ contextBridge.exposeInMainWorld(
             username,
             password
         ) => {
-
             return await ipcRenderer.invoke(
                 "auth-login",
                 {

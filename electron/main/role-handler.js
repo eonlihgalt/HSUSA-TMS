@@ -39,8 +39,6 @@ function registerRoleHandlers() {
             });
         }
     );
-}
-
     ipcMain.handle(
         "roles-create",
 
@@ -90,10 +88,40 @@ function registerRoleHandlers() {
                 createdRole
         };
     }
-);
 
+    );
 
+    ipcMain.handle(
+        "roles-update",
 
+        async (
+            event,
+            role
+        ) => {
+
+        const updatedRole =
+            await prisma.role.update({
+
+                where: {
+                    id: role.id
+                },
+
+                data: {
+                    roleName:
+                        role.roleName,
+
+                    description:
+                        role.description
+                }
+            });
+
+        return {
+            success: true,
+            role: updatedRole
+        };
+        }
+    );
+}
 
 module.exports = {
     registerRoleHandlers

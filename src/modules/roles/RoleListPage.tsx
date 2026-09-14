@@ -38,8 +38,16 @@ export default function RoleListPage() {
 
     // Early return for Detail view
     if (selectedRole) {
-        return <RoleDetailPage roleId={selectedRole} />;
+        return (
+            <RoleDetailPage
+                roleId={selectedRole}
+                onBack={() =>
+                    setSelectedRole(null)
+                }
+            />
+        );
     }
+
 
     return (
         <div style={{ padding: "40px" }}>

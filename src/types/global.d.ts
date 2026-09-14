@@ -6,6 +6,15 @@ declare global {
 
         hsusa: {
 
+            updateRole: (
+              role: {
+                 id: string;
+                    roleName: string;
+                    description: string;
+              }
+            ) => Promise<any>;
+
+
             applicationName: string;
 
             version: string;
