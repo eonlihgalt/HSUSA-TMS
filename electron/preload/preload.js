@@ -1,16 +1,32 @@
-
-
 const {
     contextBridge,
     ipcRenderer
 } = require("electron");
 
-console.log("HSUSA BRIDGE REGISTERING");
 console.log("PRELOAD LOADED");
+console.log("HSUSA BRIDGE REGISTERING");
 
 contextBridge.exposeInMainWorld(
     "hsusa",
     {
+
+        applicationName: "HSUSA TMS",
+
+        version: "1.0.0",
+
+        login: async (
+            username,
+            password
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "auth-login",
+                {
+                    username,
+                    password
+                }
+            );
+        },
 
         getUserById: async (
             userId
@@ -123,22 +139,12 @@ contextBridge.exposeInMainWorld(
             );
         },
 
-        applicationName: "HSUSA TMS",
-
-        version: "1.0.0",
-
-        login: async (
-            username,
-            password
-        ) => {
+        getQuestions: async () => {
 
             return await ipcRenderer.invoke(
-                "auth-login",
-                {
-                    username,
-                    password
-                }
+                "questions-get-all"
             );
         }
+
     }
 );

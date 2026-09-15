@@ -5,6 +5,7 @@ import LoginPage from "../modules/auth/LoginPage";
 import UserListPage from "../modules/users/UserListPage";
 import RoleListPage from "../modules/roles/RoleListPage";
 import SubjectListPage from "../modules/subjects/SubjectListPage";
+import QuestionListPage from "../modules/question/QuestionListPage";
 
 export default function App() {
 
@@ -60,6 +61,17 @@ export default function App() {
         );
     }
 
+    if (selectedModule === "questions") {
+
+        return (
+            <QuestionListPage
+                onBack={() =>
+                    setSelectedModule("")
+                }
+            />
+        );
+    }
+
     return (
 
         <div style={{ padding: "40px" }}>
@@ -102,7 +114,22 @@ export default function App() {
                 Subjects
             </button>
 
+            <br />
+            <br />
+
+            <button
+              onClick={() =>
+                  setSelectedModule("questions")
+              }
+          >
+              Question Bank
+          </button>
+
+            <br />
+            <br />
+
         </div>
+
 
     );
 }

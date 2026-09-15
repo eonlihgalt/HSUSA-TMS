@@ -6,22 +6,6 @@ declare global {
 
         hsusa: {
 
-            getSubjects: () => Promise<any>;
-
-            getSubjectById: (
-                subjectId: string
-            ) => Promise<any>;
-
-
-            updateRole: (
-              role: {
-                 id: string;
-                    roleName: string;
-                    description: string;
-              }
-            ) => Promise<any>;
-
-
             applicationName: string;
 
             version: string;
@@ -30,9 +14,7 @@ declare global {
                 username: string,
                 password: string
             ) => Promise<{
-
                 success: boolean;
-
                 message: string;
             }>;
 
@@ -45,7 +27,7 @@ declare global {
             getRoles: () => Promise<any[]>;
 
             getRoleById: (
-             roleId: string
+                roleId: string
             ) => Promise<any>;
 
             createRole: (
@@ -55,9 +37,19 @@ declare global {
                 }
             ) => Promise<any>;
 
+            updateRole: (
+                role: {
+                    id: string;
+                    roleName: string;
+                    description: string;
+                }
+            ) => Promise<any>;
+
             deleteRole: (
                 roleId: string
             ) => Promise<any>;
+
+            getSubjects: () => Promise<any[]>;
 
             getSubjectById: (
                 subjectId: string
@@ -70,13 +62,9 @@ declare global {
                 }
             ) => Promise<any>;
 
-            deleteSubject: (
-                subjectId: string
-            ) => Promise<any>;
-
             updateSubject: (
                 subject: {
-                    id:string
+                    id: string;
                     subjectName: string;
                     description: string;
                 }
@@ -86,6 +74,7 @@ declare global {
                 subjectId: string
             ) => Promise<any>;
 
+            getQuestions: () => Promise<any[]>;
 
         };
     }

@@ -12,7 +12,6 @@ export class RoleService {
         return await window.hsusa.getRoleById(
             roleId
         );
-
     }
 
     async createRole(
@@ -21,9 +20,9 @@ export class RoleService {
     ) {
 
         return await window.hsusa.createRole({
-          roleName,
+            roleName,
             description
-     });
+        });
     }
 
     async updateRole(
@@ -33,11 +32,8 @@ export class RoleService {
     ) {
 
         return await window.hsusa.updateRole({
-
             id,
-
             roleName,
-
             description
         });
     }
@@ -50,6 +46,5 @@ export class RoleService {
             roleId
         );
     }
-    
 
 }

@@ -25,9 +25,12 @@ const {
     "./electron/main/subject-handler"
 );
 
-registerSubjectHandlers();
+const {
+    registerQuestionHandlers
+} = require(
+    "./electron/main/question-handler"
+);
 
-app.whenReady()
 
 let mainWindow = null;
 
@@ -67,16 +70,17 @@ function createMainWindow() {
             mainWindow = null;
         }
     );
+
+    
 }
 
 app.whenReady().then(() => {
 
     registerUserHandlers();
-
+    registerSubjectHandlers();
+    registerQuestionHandlers();
     registerAuthenticationHandlers();
-
     registerRoleHandlers();
-
     createMainWindow();
 });
 

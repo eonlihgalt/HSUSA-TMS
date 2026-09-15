@@ -69,7 +69,20 @@ model Subject {
   updatedAt   DateTime @updatedAt
 }
 
+model Question {
+  id             String   @id @default(uuid())
 
+  questionText   String
+
+  category       String?
+
+  difficulty     String?
+
+  answer         String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
 
 enum UserStatus {
   ACTIVE
