@@ -16,6 +16,24 @@ function registerQuestionHandlers() {
             });
         }
     );
+
+    ipcMain.handle(
+        "questions-get-by-id",
+        async (
+            event,
+            questionId
+        ) => {
+
+            return await prisma.question.findUnique({
+                where: {
+                    id: questionId
+                }
+            });
+        }
+    );
+
+
+
 }
 
 module.exports = {

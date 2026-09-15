@@ -44,14 +44,20 @@ export default function QuestionListPage(
             <table
                 border={1}
                 cellPadding={10}
+                style={{
+                    width: "100%",
+                    borderCollapse: "collapse"
+                }}
             >
 
                 <thead>
+
                     <tr>
                         <th>Question</th>
                         <th>Category</th>
                         <th>Difficulty</th>
                     </tr>
+
                 </thead>
 
                 <tbody>

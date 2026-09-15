@@ -75,6 +75,9 @@ declare global {
             ) => Promise<any>;
 
             getQuestions: () => Promise<any[]>;
+            getQuestionById: (
+                questionId: string
+            ) => Promise<any>;
 
         };
     }

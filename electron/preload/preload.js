@@ -139,12 +139,25 @@ contextBridge.exposeInMainWorld(
             );
         },
 
-        getQuestions: async () => {
+        getQuestionById: async (
+            questionId
+        ) => {
 
             return await ipcRenderer.invoke(
-                "questions-get-all"
+                "questions-get-by-id",
+                questionId
             );
-        }
+        },
+
+        getQuestionById: async (
+            questionId
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "questions-get-by-id",
+                questionId
+            );
+        },
 
     }
 );

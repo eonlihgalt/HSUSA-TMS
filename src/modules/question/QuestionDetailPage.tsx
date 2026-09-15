@@ -2,28 +2,40 @@ import { useEffect, useState } from "react";
 import { QuestionService } from "./QuestionService";
 
 interface Props {
+    questionId: string;
     onBack: () => void;
 }
 
 const questionService = new QuestionService();
 
-export default function QuestionListPage(
+export default function QuestionDetailPage(
     props: Props
 ) {
 
-    const [questions, setQuestions] =
-        useState<any[]>([]);
+    const [question, setQuestion] =
+        useState<any>(null);
 
     useEffect(() => {
-        loadQuestions();
-    }, []);
+        loadQuestion();
+    }, [props.questionId]);
 
-    async function loadQuestions() {
+    async function loadQuestion() {
 
-        const data =
-            await questionService.getQuestions();
+        const result =
+            await questionService.getQuestionById(
+                props.questionId
+            );
 
-        setQuestions(data);
+        setQuestion(result);
+    }
+
+    if (!question) {
+
+        return (
+            <div style={{ padding: "40px" }}>
+                Loading...
+            </div>
+        );
     }
 
     return (
@@ -34,59 +46,40 @@ export default function QuestionListPage(
                 onClick={props.onBack}
                 style={{ marginBottom: "20px" }}
             >
-                ← Back To Main Menu
+                ← Back To Question List
             </button>
 
             <h1>
-                Question Bank
+                Question Detail
             </h1>
 
-            <table
-                border={1}
-                cellPadding={10}
-                style={{
-                    width: "100%",
-                    borderCollapse: "collapse"
-                }}
-            >
+            <p>
+                <strong>
+                    Question:
+                </strong>{" "}
+                {question.questionText}
+            </p>
 
-                <thead>
+            <p>
+                <strong>
+                    Category:
+                </strong>{" "}
+                {question.category}
+            </p>
 
-                    <tr>
-                        <th>Question</th>
-                        <th>Category</th>
-                        <th>Difficulty</th>
-                    </tr>
+            <p>
+                <strong>
+                    Difficulty:
+                </strong>{" "}
+                {question.difficulty}
+            </p>
 
-                </thead>
-
-                <tbody>
-
-                    {questions?.map(
-                        (question: any) => (
-
-                            <tr key={question.id}>
-
-                                <td>
-                                    {question.questionText}
-                                </td>
-
-                                <td>
-                                    {question.category}
-                                </td>
-
-                                <td>
-                                    {question.difficulty}
-                                </td>
-
-                            </tr>
-
-                        )
-                    )}
-
-                </tbody>
-
-            </table>
+            <p>
+                <strong>
+                    Answer:
+                </strong>{" "}
+                {question.answer}
+            </p>
 
         </div>
 
