@@ -19,6 +19,15 @@ const {
     "./electron/main/role-handler"
 );
 
+const {
+    registerSubjectHandlers
+} = require(
+    "./electron/main/subject-handler"
+);
+
+registerSubjectHandlers();
+
+app.whenReady()
 
 let mainWindow = null;
 

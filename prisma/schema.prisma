@@ -60,6 +60,17 @@ model AuditLog {
   timestamp DateTime @default(now())
 }
 
+model Subject {
+  id          String @id @default(uuid())
+  subjectName String
+  description String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
 enum UserStatus {
   ACTIVE
   INACTIVE

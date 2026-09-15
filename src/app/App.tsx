@@ -1,24 +1,108 @@
 import { useState } from "react";
+
 import LoginPage from "../modules/auth/LoginPage";
+
 import UserListPage from "../modules/users/UserListPage";
 import RoleListPage from "../modules/roles/RoleListPage";
+import SubjectListPage from "../modules/subjects/SubjectListPage";
 
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  // Callback to handle successful login
-  const handleLoginSuccess = () => {
-    setLoggedIn(true);
-  };
+    const [loggedIn, setLoggedIn] =
+        useState(false);
 
-  // Conditional rendering based on login state
-  return (
-    <div>
-      {loggedIn ? (
-        <RoleListPage /> /// <UserListPage /> /// 
-      ) : (
-        <LoginPage onLoginSuccess={handleLoginSuccess} />
-      )}
-    </div>
-  );
+    const [selectedModule, setSelectedModule] =
+        useState<string>("");
+
+    const handleLoginSuccess = () => {
+        setLoggedIn(true);
+    };
+
+    if (!loggedIn) {
+
+        return (
+            <LoginPage
+                onLoginSuccess={handleLoginSuccess}
+            />
+        );
+    }
+
+    if (selectedModule === "users") {
+
+        return (
+            <UserListPage
+                onBack={() =>
+                    setSelectedModule("")
+                }
+            />
+        );
+    }
+
+    if (selectedModule === "roles") {
+
+        return (
+            <RoleListPage
+                onBack={() =>
+                    setSelectedModule("")
+                }
+            />
+        );
+    }
+
+    if (selectedModule === "subjects") {
+
+        return (
+            <SubjectListPage
+                onBack={() =>
+                    setSelectedModule("")
+                }
+            />
+        );
+    }
+
+    return (
+
+        <div style={{ padding: "40px" }}>
+
+            <h1>
+                HSUSA Training Management System
+            </h1>
+
+            <h2>
+                Main Menu
+            </h2>
+
+            <button
+                onClick={() =>
+                    setSelectedModule("users")
+                }
+            >
+                Users
+            </button>
+
+            <br />
+            <br />
+
+            <button
+                onClick={() =>
+                    setSelectedModule("roles")
+                }
+            >
+                Roles
+            </button>
+
+            <br />
+            <br />
+
+            <button
+                onClick={() =>
+                    setSelectedModule("subjects")
+                }
+            >
+                Subjects
+            </button>
+
+        </div>
+
+    );
 }

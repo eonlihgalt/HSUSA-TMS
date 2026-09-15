@@ -6,6 +6,13 @@ declare global {
 
         hsusa: {
 
+            getSubjects: () => Promise<any>;
+
+            getSubjectById: (
+                subjectId: string
+            ) => Promise<any>;
+
+
             updateRole: (
               role: {
                  id: string;
@@ -52,6 +59,32 @@ declare global {
                 roleId: string
             ) => Promise<any>;
 
+            getSubjectById: (
+                subjectId: string
+            ) => Promise<any>;
+
+            createSubject: (
+                subject: {
+                    subjectName: string;
+                    description: string;
+                }
+            ) => Promise<any>;
+
+            deleteSubject: (
+                subjectId: string
+            ) => Promise<any>;
+
+            updateSubject: (
+                subject: {
+                    id:string
+                    subjectName: string;
+                    description: string;
+                }
+            ) => Promise<any>;
+
+            deleteSubject: (
+                subjectId: string
+            ) => Promise<any>;
 
 
         };

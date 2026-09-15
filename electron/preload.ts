@@ -1,9 +1,10 @@
-import { contextBridge } from "electron";
+const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld(
     "hsusa",
     {
         applicationName: "HSUSA TMS",
+
         version: "1.0.0",
 
         login: async (
@@ -11,16 +12,44 @@ contextBridge.exposeInMainWorld(
             password: string
         ) => {
 
-            console.log(
-                "IPC Login Request",
-                username
+            return await ipcRenderer.invoke(
+                "auth-login",
+                {
+                    username,
+                    password
+                }
             );
+        },
 
-            return {
-                success: true,
-                message:
-                    "IPC Connected"
-            };
+        getSubjects: async () => {
+
+            return await ipcRenderer.invoke(
+                "subjects-get-all"
+            );
+        },
+
+        getSubjectById: async (
+            subjectId: string
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-get-by-id",
+                subjectId
+            );
+        },
+
+        createSubject: async (
+            subject: {
+                subjectName: string;
+                description: string;
+            }
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-create",
+                subject
+            );
         }
     }
 );
+

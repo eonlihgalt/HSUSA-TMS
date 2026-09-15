@@ -1,19 +1,24 @@
+
+
 const {
     contextBridge,
     ipcRenderer
 } = require("electron");
+
+console.log("HSUSA BRIDGE REGISTERING");
+console.log("PRELOAD LOADED");
 
 contextBridge.exposeInMainWorld(
     "hsusa",
     {
 
         getUserById: async (
-             userId
+            userId
         ) => {
 
             return await ipcRenderer.invoke(
-               "users-get-by-id",
-               userId
+                "users-get-by-id",
+                userId
             );
         },
 
@@ -26,24 +31,25 @@ contextBridge.exposeInMainWorld(
 
         getRoles: async () => {
 
-               return await ipcRenderer.invoke(
-                    "roles-get-all"
-             );
-            },
+            return await ipcRenderer.invoke(
+                "roles-get-all"
+            );
+        },
 
-            getRoleById: async (
-               roleId
-            ) => {
+        getRoleById: async (
+            roleId
+        ) => {
 
-               return await ipcRenderer.invoke(
-                  "roles-get-by-id",
-                 roleId
-             );
-            },
+            return await ipcRenderer.invoke(
+                "roles-get-by-id",
+                roleId
+            );
+        },
 
         createRole: async (
             role
         ) => {
+
             return await ipcRenderer.invoke(
                 "roles-create",
                 role
@@ -53,6 +59,7 @@ contextBridge.exposeInMainWorld(
         updateRole: async (
             role
         ) => {
+
             return await ipcRenderer.invoke(
                 "roles-update",
                 role
@@ -69,6 +76,52 @@ contextBridge.exposeInMainWorld(
             );
         },
 
+        getSubjects: async () => {
+
+            return await ipcRenderer.invoke(
+                "subjects-get-all"
+            );
+        },
+
+        getSubjectById: async (
+            subjectId
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-get-by-id",
+                subjectId
+            );
+        },
+
+        createSubject: async (
+            subject
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-create",
+                subject
+            );
+        },
+
+        updateSubject: async (
+            subject
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-update",
+                subject
+            );
+        },
+
+        deleteSubject: async (
+            subjectId
+        ) => {
+
+            return await ipcRenderer.invoke(
+                "subjects-delete",
+                subjectId
+            );
+        },
 
         applicationName: "HSUSA TMS",
 
@@ -78,6 +131,7 @@ contextBridge.exposeInMainWorld(
             username,
             password
         ) => {
+
             return await ipcRenderer.invoke(
                 "auth-login",
                 {

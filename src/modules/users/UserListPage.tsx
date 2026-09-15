@@ -4,14 +4,19 @@ from "react";
 import { UserService }
 from "./UserService";
 
-import UserDetailPage from "./UserDetailPage";
+import UserDetailPage
+from "./UserDetailPage";
 
-
+interface Props {
+    onBack: () => void;
+}
 
 const userService =
     new UserService();
 
-export default function UserListPage() {
+export default function UserListPage(
+    props: Props
+) {
 
     const [
         selectedUser,
@@ -29,6 +34,14 @@ export default function UserListPage() {
 
     }, []);
 
+    async function loadUsers() {
+
+        const data =
+            await userService.getUsers();
+
+        setUsers(data);
+    }
+
     if (selectedUser) {
 
         return (
@@ -37,17 +50,8 @@ export default function UserListPage() {
                 onBack={() =>
                     setSelectedUser(null)
                 }
-           />
-       );
-    }
-
-
-    async function loadUsers() {
-
-        const data =
-            await userService.getUsers();
-
-        setUsers(data);
+            />
+        );
     }
 
     return (
@@ -57,6 +61,15 @@ export default function UserListPage() {
                 padding: "40px"
             }}
         >
+
+            <button
+                onClick={props.onBack}
+                style={{
+                    marginBottom: "20px"
+                }}
+            >
+                ← Back To Main Menu
+            </button>
 
             <h1>
                 User List
@@ -89,6 +102,7 @@ export default function UserListPage() {
                             >
 
                                 <td>
+
                                     <button
                                         onClick={() =>
                                             setSelectedUser(
@@ -98,17 +112,24 @@ export default function UserListPage() {
                                     >
                                         {user.username}
                                     </button>
+
                                 </td>
 
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>
                                 <td>{user.email}</td>
                                 <td>{user.status}</td>
+
                             </tr>
+
                         )
                     )}
+
                 </tbody>
+
             </table>
+
         </div>
+
     );
 }

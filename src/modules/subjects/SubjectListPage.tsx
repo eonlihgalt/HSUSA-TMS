@@ -1,62 +1,80 @@
 import { useEffect, useState } from "react";
-import { RoleService } from "./RoleService";
-import RoleDetailPage from "./RoleDetailPage";
-import CreateRoleForm from "./CreateRoleForm";
+import { SubjectService } from "./SubjectService";
+import SubjectDetailPage from "./SubjectDetailPage";
+import CreateSubjectForm from "./CreateSubjectForm";
 
 interface Props {
     onBack: () => void;
 }
 
-const roleService = new RoleService();
+const subjectService = new SubjectService();
 
-export default function RoleListPage(
+export default function SubjectListPage(
     props: Props
 ) {
 
-    const [roles, setRoles] =
+    const [subjects, setSubjects] =
         useState<any[]>([]);
 
-    const [selectedRole, setSelectedRole] =
+    const [selectedSubject, setSelectedSubject] =
         useState<string | null>(null);
 
     const [creating, setCreating] =
         useState(false);
 
     useEffect(() => {
-        loadRoles();
+        loadSubjects();
     }, []);
 
-    async function loadRoles() {
+    async function loadSubjects() {
 
         const data =
-            await roleService.getRoles();
+            await subjectService.getSubjects();
 
-        setRoles(data);
+        console.log(
+            "Subjects returned:",
+            data
+        );
+
+        setSubjects(data);
     }
 
-    async function createRole(
-        roleName: string,
+    async function createSubject(
+        subjectName: string,
         description: string
     ) {
 
+        console.log(
+            "Creating subject:",
+            subjectName,
+            description
+        );
+
         const result =
-            await roleService.createRole(
-                roleName,
+            await subjectService.createSubject(
+                subjectName,
                 description
             );
 
-        console.log(result);
+        console.log(
+            "Create Subject Result:",
+            result
+        );
+
+        await loadSubjects();
+
+        console.log(
+            "Subject list refreshed"
+        );
 
         setCreating(false);
-
-        loadRoles();
     }
 
     if (creating) {
 
         return (
-            <CreateRoleForm
-                onCreate={createRole}
+            <CreateSubjectForm
+                onCreate={createSubject}
                 onCancel={() =>
                     setCreating(false)
                 }
@@ -64,14 +82,14 @@ export default function RoleListPage(
         );
     }
 
-    if (selectedRole) {
+    if (selectedSubject) {
 
         return (
-            <RoleDetailPage
-                roleId={selectedRole}
+            <SubjectDetailPage
+                subjectId={selectedSubject}
                 onBack={() => {
-                    setSelectedRole(null);
-                    loadRoles();
+                    setSelectedSubject(null);
+                    loadSubjects();
                 }}
             />
         );
@@ -89,7 +107,7 @@ export default function RoleListPage(
             </button>
 
             <h1>
-                Role List
+                Subject List
             </h1>
 
             <button
@@ -100,49 +118,43 @@ export default function RoleListPage(
                     marginBottom: "20px"
                 }}
             >
-                + Create New Role
+                + Create New Subject
             </button>
 
             <table
                 border={1}
                 cellPadding={10}
-                style={{
-                    width: "100%",
-                    borderCollapse: "collapse"
-                }}
             >
 
                 <thead>
-
                     <tr>
-                        <th>Role Name</th>
+                        <th>Subject Name</th>
                         <th>Description</th>
                         <th>Actions</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
 
-                    {roles?.map(
-                        (role) => (
+                    {subjects?.map(
+                        (subject: any) => (
 
-                            <tr key={role.id}>
+                            <tr key={subject.id}>
 
                                 <td>
-                                    {role.roleName}
+                                    {subject.subjectName}
                                 </td>
 
                                 <td>
-                                    {role.description}
+                                    {subject.description}
                                 </td>
 
                                 <td>
 
                                     <button
                                         onClick={() =>
-                                            setSelectedRole(
-                                                role.id
+                                            setSelectedSubject(
+                                                subject.id
                                             )
                                         }
                                     >
