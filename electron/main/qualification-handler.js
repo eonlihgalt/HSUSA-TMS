@@ -18,19 +18,20 @@ function calculateStatus(expiresAt, status) {
     if (!expiresAt) return "CURRENT";
     const days = (new Date(expiresAt).getTime() - Date.now()) / 86400000;
     if (days < 0) return "EXPIRED";
+    if (days <= 7) return "EXPIRING_CRITICAL";
     if (days <= 30) return "EXPIRING";
     return "CURRENT";
 }
 
-function serialize(qualification) {
-    return { ...qualification, status: calculateStatus(qualification.expiresAt, qualification.status) };
+function serialize(record) {
+    return { ...record, status: calculateStatus(record.expiresAt, record.status) };
 }
 
 async function audit(action) {
     await prisma.auditLog.create({ data: { entity: "Qualification", action } });
 }
 
-function dataFor(input) {
+function qualificationData(input) {
     return {
         name: input.name.trim(),
         description: input.description?.trim() || null,
@@ -52,21 +53,21 @@ function registerQualificationHandlers() {
     ipcMain.handle("qualifications-get-by-id", async (event, id) => {
         const record = await prisma.qualification.findUnique({
             where: { id },
-            include: { assignments: { include: { user: true } } }
+            include: { assignments: { include: { user: true }, orderBy: { assignedAt: "desc" } } }
         });
         return record ? serialize(record) : null;
     });
 
     ipcMain.handle("qualifications-create", async (event, input) => {
         await requireAdministrator();
-        const created = await prisma.qualification.create({ data: dataFor(input), include: { assignments: { include: { user: true } } } });
+        const created = await prisma.qualification.create({ data: qualificationData(input), include: { assignments: { include: { user: true } } } });
         await audit("QUALIFICATION_CREATED");
         return { success: true, qualification: serialize(created) };
     });
 
     ipcMain.handle("qualifications-update", async (event, input) => {
         await requireAdministrator();
-        const updated = await prisma.qualification.update({ where: { id: input.id }, data: dataFor(input), include: { assignments: { include: { user: true } } } });
+        const updated = await prisma.qualification.update({ where: { id: input.id }, data: qualificationData(input), include: { assignments: { include: { user: true } } } });
         await audit("QUALIFICATION_UPDATED");
         return { success: true, qualification: serialize(updated) };
     });
@@ -80,21 +81,21 @@ function registerQualificationHandlers() {
 
     ipcMain.handle("qualifications-assign-user", async (event, input) => {
         await requireAdministrator();
-        await prisma.userQualification.upsert({
-            where: { userId_qualificationId: { userId: input.userId, qualificationId: input.qualificationId } },
-            create: { userId: input.userId, qualificationId: input.qualificationId },
-            update: {}
-        });
-        await audit("QUALIFICATION_ASSIGNED");
+        const existing = await prisma.userQualification.findFirst({ where: { userId: input.userId, qualificationId: input.qualificationId, status: "ACTIVE" } });
+        if (!existing) {
+            await prisma.userQualification.create({ data: { userId: input.userId, qualificationId: input.qualificationId, status: "ACTIVE" } });
+            await audit("QUALIFICATION_ASSIGNED");
+        }
         return { success: true };
     });
 
     ipcMain.handle("qualifications-unassign-user", async (event, input) => {
         await requireAdministrator();
-        await prisma.userQualification.delete({
-            where: { userId_qualificationId: { userId: input.userId, qualificationId: input.qualificationId } }
-        });
-        await audit("QUALIFICATION_UNASSIGNED");
+        const active = await prisma.userQualification.findFirst({ where: { userId: input.userId, qualificationId: input.qualificationId, status: "ACTIVE" } });
+        if (active) {
+            await prisma.userQualification.update({ where: { id: active.id }, data: { status: "REVOKED", revokedAt: new Date(), endReason: input.reason || "Removed by administrator" } });
+            await audit("QUALIFICATION_UNASSIGNED");
+        }
         return { success: true };
     });
 }

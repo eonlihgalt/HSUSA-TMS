@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id              String                @id @default(uuid())
-  username        String                @unique
+  id              String              @id @default(uuid())
+  username        String              @unique
   passwordHash    String
   firstName       String
   lastName        String
   email           String?
   status          UserStatus
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
   userRoles       UserRole[]
   qualifications  UserQualification[]
 }
@@ -71,31 +71,36 @@ model Question {
 }
 
 model Qualification {
-  id           String              @id @default(uuid())
-  name         String              @unique
-  description  String?
-  status       QualificationStatus @default(CURRENT)
-  issuedAt     DateTime?
-  expiresAt    DateTime?
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-  assignments  UserQualification[]
+  id          String                @id @default(uuid())
+  name        String                @unique
+  description String?
+  status      QualificationStatus    @default(CURRENT)
+  issuedAt    DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  assignments UserQualification[]
 
   @@index([status])
   @@index([expiresAt])
 }
 
 model UserQualification {
-  id              String        @id @default(uuid())
+  id              String             @id @default(uuid())
   userId          String
   qualificationId String
-  assignedAt      DateTime      @default(now())
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  qualification   Qualification @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+  assignedAt      DateTime           @default(now())
+  completedAt     DateTime?
+  revokedAt       DateTime?
+  endReason       String?
+  status          AssignmentStatus   @default(ACTIVE)
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qualification   Qualification      @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, qualificationId], name: "userId_qualificationId")
+  @@unique([userId, qualificationId, status], name: "user_qualification_status")
   @@index([userId])
   @@index([qualificationId])
+  @@index([status])
 }
 
 enum UserStatus {
@@ -107,6 +112,13 @@ enum UserStatus {
 enum QualificationStatus {
   CURRENT
   EXPIRING
+  EXPIRING_CRITICAL
   EXPIRED
   SUSPENDED
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  COMPLETED
+  REVOKED
 }
