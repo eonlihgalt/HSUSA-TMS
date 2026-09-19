@@ -1,13 +1,9 @@
 export {};
 
 declare global {
-
     interface Window {
-
         hsusa: {
-
             applicationName: string;
-
             version: string;
 
             login: (
@@ -75,10 +71,33 @@ declare global {
             ) => Promise<any>;
 
             getQuestions: () => Promise<any[]>;
+
             getQuestionById: (
                 questionId: string
             ) => Promise<any>;
 
+            createQuestion: (
+                question: {
+                    questionText: string;
+                    category?: string;
+                    difficulty?: string;
+                    answer?: string;
+                }
+            ) => Promise<any>;
+
+            updateQuestion: (
+                question: {
+                    id: string;
+                    questionText: string;
+                    category?: string;
+                    difficulty?: string;
+                    answer?: string;
+                }
+            ) => Promise<any>;
+
+            deleteQuestion: (
+                questionId: string
+            ) => Promise<any>;
         };
     }
 }

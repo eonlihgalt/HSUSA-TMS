@@ -9,16 +9,13 @@ console.log("HSUSA BRIDGE REGISTERING");
 contextBridge.exposeInMainWorld(
     "hsusa",
     {
-
         applicationName: "HSUSA TMS",
-
         version: "1.0.0",
 
         login: async (
             username,
             password
         ) => {
-
             return await ipcRenderer.invoke(
                 "auth-login",
                 {
@@ -31,7 +28,6 @@ contextBridge.exposeInMainWorld(
         getUserById: async (
             userId
         ) => {
-
             return await ipcRenderer.invoke(
                 "users-get-by-id",
                 userId
@@ -39,14 +35,12 @@ contextBridge.exposeInMainWorld(
         },
 
         getUsers: async () => {
-
             return await ipcRenderer.invoke(
                 "users-get-all"
             );
         },
 
         getRoles: async () => {
-
             return await ipcRenderer.invoke(
                 "roles-get-all"
             );
@@ -55,7 +49,6 @@ contextBridge.exposeInMainWorld(
         getRoleById: async (
             roleId
         ) => {
-
             return await ipcRenderer.invoke(
                 "roles-get-by-id",
                 roleId
@@ -65,7 +58,6 @@ contextBridge.exposeInMainWorld(
         createRole: async (
             role
         ) => {
-
             return await ipcRenderer.invoke(
                 "roles-create",
                 role
@@ -75,7 +67,6 @@ contextBridge.exposeInMainWorld(
         updateRole: async (
             role
         ) => {
-
             return await ipcRenderer.invoke(
                 "roles-update",
                 role
@@ -85,7 +76,6 @@ contextBridge.exposeInMainWorld(
         deleteRole: async (
             roleId
         ) => {
-
             return await ipcRenderer.invoke(
                 "roles-delete",
                 roleId
@@ -93,7 +83,6 @@ contextBridge.exposeInMainWorld(
         },
 
         getSubjects: async () => {
-
             return await ipcRenderer.invoke(
                 "subjects-get-all"
             );
@@ -102,7 +91,6 @@ contextBridge.exposeInMainWorld(
         getSubjectById: async (
             subjectId
         ) => {
-
             return await ipcRenderer.invoke(
                 "subjects-get-by-id",
                 subjectId
@@ -112,7 +100,6 @@ contextBridge.exposeInMainWorld(
         createSubject: async (
             subject
         ) => {
-
             return await ipcRenderer.invoke(
                 "subjects-create",
                 subject
@@ -122,7 +109,6 @@ contextBridge.exposeInMainWorld(
         updateSubject: async (
             subject
         ) => {
-
             return await ipcRenderer.invoke(
                 "subjects-update",
                 subject
@@ -132,32 +118,52 @@ contextBridge.exposeInMainWorld(
         deleteSubject: async (
             subjectId
         ) => {
-
             return await ipcRenderer.invoke(
                 "subjects-delete",
                 subjectId
             );
         },
 
-        getQuestionById: async (
-            questionId
-        ) => {
-
+        getQuestions: async () => {
             return await ipcRenderer.invoke(
-                "questions-get-by-id",
-                questionId
+                "questions-get-all"
             );
         },
 
         getQuestionById: async (
             questionId
         ) => {
-
             return await ipcRenderer.invoke(
                 "questions-get-by-id",
                 questionId
             );
         },
 
+        createQuestion: async (
+            question
+        ) => {
+            return await ipcRenderer.invoke(
+                "questions-create",
+                question
+            );
+        },
+
+        updateQuestion: async (
+            question
+        ) => {
+            return await ipcRenderer.invoke(
+                "questions-update",
+                question
+            );
+        },
+
+        deleteQuestion: async (
+            questionId
+        ) => {
+            return await ipcRenderer.invoke(
+                "questions-delete",
+                questionId
+            );
+        }
     }
 );

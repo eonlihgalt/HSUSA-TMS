@@ -1,12 +1,7 @@
 import { useState } from "react";
 
 interface Props {
-    questionText: string;
-    category: string;
-    difficulty: string;
-    answer: string;
-
-    onUpdate: (
+    onCreate: (
         questionText: string,
         category: string,
         difficulty: string,
@@ -16,24 +11,24 @@ interface Props {
     onCancel: () => void;
 }
 
-export default function EditQuestionForm(
+export default function CreateQuestionForm(
     props: Props
 ) {
     const [questionText, setQuestionText] =
-        useState(props.questionText);
+        useState("");
 
     const [category, setCategory] =
-        useState(props.category);
+        useState("");
 
     const [difficulty, setDifficulty] =
-        useState(props.difficulty);
+        useState("");
 
     const [answer, setAnswer] =
-        useState(props.answer);
+        useState("");
 
     return (
         <div style={{ padding: "40px" }}>
-            <h2>Edit Question</h2>
+            <h2>Create Question</h2>
 
             <div>
                 <label>Question Text</label>
@@ -101,16 +96,16 @@ export default function EditQuestionForm(
             <br />
 
             <button
-                onClick={() =>
-                    props.onUpdate(
+                onClick={() => {
+                    props.onCreate(
                         questionText,
                         category,
                         difficulty,
                         answer
-                    )
-                }
+                    );
+                }}
             >
-                Update Question
+                Save Question
             </button>
 
             <button
