@@ -19,6 +19,10 @@ export class QuestionService {
         return await window.hsusa.deleteQuestion(questionId);
     }
 
+    async deleteQuestions(questionIds: string[]) {
+        return await window.hsusa.deleteQuestions(questionIds);
+    }
+
     async importQuestions(questions: Array<{
         questionText: string;
         category: string;

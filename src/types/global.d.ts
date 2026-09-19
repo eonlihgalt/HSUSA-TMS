@@ -23,6 +23,7 @@ declare global {
             createQuestion: (question: { questionText: string; category?: string; difficulty?: string; answer?: string }) => Promise<any>;
             updateQuestion: (question: { id: string; questionText: string; category?: string; difficulty?: string; answer?: string }) => Promise<any>;
             deleteQuestion: (questionId: string) => Promise<any>;
+            deleteQuestions: (questionIds: string[]) => Promise<any>;
             importQuestions: (questions: Array<{ questionText: string; category: string; difficulty: string; answer: string }>) => Promise<any>;
         };
     }

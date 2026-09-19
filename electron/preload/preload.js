@@ -27,5 +27,6 @@ contextBridge.exposeInMainWorld("hsusa", {
     createQuestion: async (question) => ipcRenderer.invoke("questions-create", question),
     updateQuestion: async (question) => ipcRenderer.invoke("questions-update", question),
     deleteQuestion: async (questionId) => ipcRenderer.invoke("questions-delete", questionId),
+    deleteQuestions: async (questionIds) => ipcRenderer.invoke("questions-delete-many", questionIds),
     importQuestions: async (questions) => ipcRenderer.invoke("questions-import", questions)
 });
