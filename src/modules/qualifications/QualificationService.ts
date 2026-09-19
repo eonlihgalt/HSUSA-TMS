@@ -1,18 +1,11 @@
 export type QualificationStatus = "CURRENT" | "EXPIRING" | "EXPIRED" | "SUSPENDED";
-
-export type QualificationInput = {
-    name: string;
-    description: string;
-    userId: string;
-    issuedAt: string;
-    expiresAt: string;
-    status: QualificationStatus;
-};
-
+export type QualificationInput = { name: string; description: string; issuedAt: string; expiresAt: string; status: QualificationStatus };
 export class QualificationService {
-    async getQualifications() { return await window.hsusa.getQualifications(); }
-    async getQualificationById(id: string) { return await window.hsusa.getQualificationById(id); }
-    async createQualification(qualification: QualificationInput) { return await window.hsusa.createQualification(qualification); }
-    async updateQualification(qualification: QualificationInput & { id: string }) { return await window.hsusa.updateQualification(qualification); }
-    async deleteQualification(id: string) { return await window.hsusa.deleteQualification(id); }
+    async getQualifications() { return window.hsusa.getQualifications(); }
+    async getQualificationById(id: string) { return window.hsusa.getQualificationById(id); }
+    async createQualification(input: QualificationInput) { return window.hsusa.createQualification(input); }
+    async updateQualification(input: QualificationInput & { id: string }) { return window.hsusa.updateQualification(input); }
+    async deleteQualification(id: string) { return window.hsusa.deleteQualification(id); }
+    async assignUser(qualificationId: string, userId: string) { return window.hsusa.assignQualificationUser({ qualificationId, userId }); }
+    async unassignUser(qualificationId: string, userId: string) { return window.hsusa.unassignQualificationUser({ qualificationId, userId }); }
 }

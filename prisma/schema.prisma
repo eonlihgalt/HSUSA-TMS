@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id              String          @id @default(uuid())
-  username        String          @unique
+  id              String                @id @default(uuid())
+  username        String                @unique
   passwordHash    String
   firstName       String
   lastName        String
   email           String?
   status          UserStatus
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
   userRoles       UserRole[]
-  qualifications  Qualification[]
+  qualifications  UserQualification[]
 }
 
 model Role {
@@ -71,20 +71,31 @@ model Question {
 }
 
 model Qualification {
-  id          String             @id @default(uuid())
-  name        String
-  description String?
-  status      QualificationStatus @default(CURRENT)
-  issuedAt    DateTime?
-  expiresAt   DateTime?
-  userId      String
-  user        User               @relation(fields: [userId], references: [id])
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  id           String              @id @default(uuid())
+  name         String              @unique
+  description  String?
+  status       QualificationStatus @default(CURRENT)
+  issuedAt     DateTime?
+  expiresAt    DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  assignments  UserQualification[]
 
-  @@index([userId])
   @@index([status])
   @@index([expiresAt])
+}
+
+model UserQualification {
+  id              String        @id @default(uuid())
+  userId          String
+  qualificationId String
+  assignedAt      DateTime      @default(now())
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qualification   Qualification @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, qualificationId], name: "userId_qualificationId")
+  @@index([userId])
+  @@index([qualificationId])
 }
 
 enum UserStatus {
