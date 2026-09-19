@@ -1,0 +1,6 @@
+enum QualificationStatus {
+  CURRENT
+  EXPIRING
+  EXPIRED
+  SUSPENDED
+}
