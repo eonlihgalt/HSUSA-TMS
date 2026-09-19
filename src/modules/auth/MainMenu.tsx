@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 interface Props {
-    onLoginSuccess: () => void;
     onLogout: () => void;
     currentUserName?: string | null;
 }
