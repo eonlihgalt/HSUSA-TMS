@@ -5,7 +5,8 @@ declare global {
         hsusa: {
             applicationName: string;
             version: string;
-            login: (username: string, password: string) => Promise<{ success: boolean; message: string }>;
+            login: (username: string, password: string) => Promise<{ success: boolean; message: string; user?: { id: string; username: string } }>;
+            logout: () => Promise<any>;
             getUserById: (userId: string) => Promise<any>;
             getUsers: () => Promise<any[]>;
             createUser: (user: { username: string; password: string; firstName: string; lastName: string; email: string; status: "ACTIVE" | "INACTIVE" | "LOCKED" }) => Promise<any>;

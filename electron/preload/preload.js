@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("hsusa", {
     applicationName: "HSUSA TMS",
     version: "1.0.0",
     login: async (username, password) => ipcRenderer.invoke("auth-login", { username, password }),
+    logout: async () => ipcRenderer.invoke("auth-logout"),
     getUserById: async (userId) => ipcRenderer.invoke("users-get-by-id", userId),
     getUsers: async () => ipcRenderer.invoke("users-get-all"),
     createUser: async (user) => ipcRenderer.invoke("users-create", user),
