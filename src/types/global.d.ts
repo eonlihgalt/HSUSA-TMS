@@ -8,6 +8,9 @@ declare global {
             login: (username: string, password: string) => Promise<{ success: boolean; message: string }>;
             getUserById: (userId: string) => Promise<any>;
             getUsers: () => Promise<any[]>;
+            createUser: (user: { username: string; password: string; firstName: string; lastName: string; email: string; status: "ACTIVE" | "INACTIVE" | "LOCKED" }) => Promise<any>;
+            deleteUser: (userId: string) => Promise<any>;
+            changeUserPassword: (request: { userId: string; password: string }) => Promise<any>;
             getRoles: () => Promise<any[]>;
             getRoleById: (roleId: string) => Promise<any>;
             createRole: (role: { roleName: string; description: string }) => Promise<any>;
