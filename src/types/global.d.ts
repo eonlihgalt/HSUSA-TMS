@@ -9,6 +9,7 @@ declare global {
             getUserById: (userId: string) => Promise<any>;
             getUsers: () => Promise<any[]>;
             createUser: (user: { username: string; password: string; firstName: string; lastName: string; email: string; status: "ACTIVE" | "INACTIVE" | "LOCKED" }) => Promise<any>;
+            updateUser: (user: { id: string; username: string; firstName: string; lastName: string; email: string; status: "ACTIVE" | "INACTIVE" | "LOCKED" }) => Promise<any>;
             deleteUser: (userId: string) => Promise<any>;
             changeUserPassword: (request: { userId: string; password: string }) => Promise<any>;
             getRoles: () => Promise<any[]>;

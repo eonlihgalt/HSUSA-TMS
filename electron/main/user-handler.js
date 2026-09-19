@@ -28,6 +28,30 @@ function registerUserHandlers() {
         return { success: true, user: createdUser };
     });
 
+    ipcMain.handle("users-update", async (event, user) => {
+        const existing = await prisma.user.findFirst({
+            where: {
+                username: user.username,
+                NOT: { id: user.id }
+            }
+        });
+
+        if (existing) return { success: false, message: "Username already exists" };
+
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email || null,
+                status: user.status
+            }
+        });
+
+        return { success: true, user: updatedUser };
+    });
+
     ipcMain.handle("users-delete", async (event, userId) => {
         await prisma.userRole.deleteMany({ where: { userId } });
         await prisma.user.delete({ where: { id: userId } });

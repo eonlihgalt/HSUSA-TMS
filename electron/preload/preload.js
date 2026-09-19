@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld("hsusa", {
     getUserById: async (userId) => ipcRenderer.invoke("users-get-by-id", userId),
     getUsers: async () => ipcRenderer.invoke("users-get-all"),
     createUser: async (user) => ipcRenderer.invoke("users-create", user),
+    updateUser: async (user) => ipcRenderer.invoke("users-update", user),
     deleteUser: async (userId) => ipcRenderer.invoke("users-delete", userId),
     changeUserPassword: async (request) => ipcRenderer.invoke("users-change-password", request),
     getRoles: async () => ipcRenderer.invoke("roles-get-all"),

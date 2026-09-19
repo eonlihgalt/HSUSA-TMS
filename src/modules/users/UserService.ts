@@ -18,6 +18,17 @@ export class UserService {
         return await window.hsusa.createUser(user);
     }
 
+    async updateUser(user: {
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        status: "ACTIVE" | "INACTIVE" | "LOCKED";
+    }) {
+        return await window.hsusa.updateUser(user);
+    }
+
     async deleteUser(userId: string) {
         return await window.hsusa.deleteUser(userId);
     }
