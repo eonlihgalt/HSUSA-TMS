@@ -71,14 +71,14 @@ model Question {
 }
 
 model Qualification {
-  id          String                @id @default(uuid())
-  name        String                @unique
+  id          String             @id @default(uuid())
+  name        String             @unique
   description String?
-  status      QualificationStatus    @default(CURRENT)
+  status      QualificationStatus @default(CURRENT)
   issuedAt    DateTime?
   expiresAt   DateTime?
-  createdAt   DateTime              @default(now())
-  updatedAt   DateTime              @updatedAt
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
   assignments UserQualification[]
 
   @@index([status])
@@ -86,18 +86,17 @@ model Qualification {
 }
 
 model UserQualification {
-  id              String             @id @default(uuid())
+  id              String           @id @default(uuid())
   userId          String
   qualificationId String
-  assignedAt      DateTime           @default(now())
+  assignedAt      DateTime         @default(now())
   completedAt     DateTime?
   revokedAt       DateTime?
   endReason       String?
-  status          AssignmentStatus   @default(ACTIVE)
-  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  qualification   Qualification      @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+  status          AssignmentStatus @default(ACTIVE)
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qualification   Qualification    @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, qualificationId, status], name: "user_qualification_status")
   @@index([userId])
   @@index([qualificationId])
   @@index([status])
