@@ -4,19 +4,26 @@ import { QualificationService, QualificationStatus } from "./QualificationServic
 interface Props { onBack: () => void; }
 type User = { id: string; username: string };
 type Assignment = { id: string; status: string; assignedAt: string; revokedAt?: string | null; completedAt?: string | null; endReason?: string | null; user: User };
-type Qualification = { id: string; name: string; description?: string | null; status: QualificationStatus; issuedAt?: string | null; expiresAt?: string | null; assignments?: Assignment[] };
+type Qualification = { id: string; name: string; description?: string | null; status: QualificationStatus; issuedAt?: string | Date | null; expiresAt?: string | Date | null; assignments?: Assignment[] };
 type Form = { name: string; description: string; issuedAt: string; expiresAt: string; status: QualificationStatus };
 
 const service = new QualificationService();
 const emptyForm = (): Form => ({ name: "", description: "", issuedAt: "", expiresAt: "", status: "CURRENT" });
 const editableStatuses: QualificationStatus[] = ["CURRENT", "SUSPENDED"];
 
+function dateInputValue(value?: string | Date | null): string {
+    if (!value) return "";
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toISOString().slice(0, 10);
+}
+
 function toForm(item: Qualification): Form {
     return {
         name: item.name,
         description: item.description ?? "",
-        issuedAt: item.issuedAt?.slice(0, 10) ?? "",
-        expiresAt: item.expiresAt?.slice(0, 10) ?? "",
+        issuedAt: dateInputValue(item.issuedAt),
+        expiresAt: dateInputValue(item.expiresAt),
         status: editableStatuses.includes(item.status) ? item.status : "CURRENT"
     };
 }
