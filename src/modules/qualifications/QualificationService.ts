@@ -1,6 +1,7 @@
 export type QualificationStatus = "CURRENT" | "EXPIRING" | "EXPIRING_CRITICAL" | "EXPIRED" | "SUSPENDED";
 export type AssignmentStatus = "ACTIVE" | "COMPLETED" | "REVOKED";
-export type QualificationInput = { name: string; description: string; issuedAt: string; expiresAt: string; status: QualificationStatus };
+export type QualificationInput = { name: string; description: string; issuedAt: string; expiresAt: string; status: "CURRENT" | "SUSPENDED" };
+
 export class QualificationService {
     async getQualifications() { return window.hsusa.getQualifications(); }
     async getQualificationById(id: string) { return window.hsusa.getQualificationById(id); }
