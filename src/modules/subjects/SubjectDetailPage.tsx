@@ -9,170 +9,105 @@ interface Props {
 
 const subjectService = new SubjectService();
 
-export default function SubjectDetailPage(
-    props: Props
-) {
+function messageFor(error: unknown, fallback: string): string {
+    return error instanceof Error ? error.message : fallback;
+}
 
-    const [subject, setSubject] =
-        useState<any>(null);
-
-    const [editing, setEditing] =
-        useState(false);
-
-    useEffect(() => {
-        loadSubject();
-    }, [props.subjectId]);
+export default function SubjectDetailPage(props: Props) {
+    const [subject, setSubject] = useState<any>(null);
+    const [editing, setEditing] = useState(false);
+    const [message, setMessage] = useState("");
+    const [saving, setSaving] = useState(false);
 
     async function loadSubject() {
+        try {
+            setSubject(await subjectService.getSubjectById(props.subjectId));
+        } catch (error) {
+            setMessage(messageFor(error, "Unable to load subject."));
+        }
+    }
 
-        const result =
-            await subjectService.getSubjectById(
-                props.subjectId
+    useEffect(() => { void loadSubject(); }, [props.subjectId]);
+
+    async function updateSubject(subjectName: string, description: string) {
+        if (!subjectName.trim()) {
+            setMessage("Subject name is required.");
+            return;
+        }
+
+        setSaving(true);
+        setMessage("");
+        try {
+            const result = await subjectService.updateSubject(
+                props.subjectId,
+                subjectName.trim(),
+                description.trim()
             );
 
-        setSubject(result);
-    }
+            if (!result?.success) {
+                setMessage(result?.message ?? "Unable to update subject.");
+                return;
+            }
 
-    async function updateSubject(
-        subjectName: string,
-        description: string
-    ) {
-
-        await subjectService.updateSubject(
-            subject.id,
-            subjectName,
-            description
-        );
-
-        setEditing(false);
-
-        await loadSubject();
-    }
-
-    async function confirmDeleteSubject() {
-
-        if (
-            window.confirm(
-                "Delete this subject?"
-            )
-        ) {
-
-            await deleteSubject();
+            setEditing(false);
+            setMessage("Subject updated successfully.");
+            await loadSubject();
+        } catch (error) {
+            setMessage(messageFor(error, "Unable to update subject."));
+        } finally {
+            setSaving(false);
         }
     }
 
     async function deleteSubject() {
-
         try {
-
-            console.log(
-                "Deleting Subject:",
-                subject.id
-            );
-
-            const result =
-                await subjectService.deleteSubject(
-                    subject.id
-                );
-
-            console.log(
-                "Delete result:",
-                result
-            );
-
+            const result = await subjectService.deleteSubject(props.subjectId);
+            if (!result?.success) {
+                setMessage(result?.message ?? "Unable to delete subject.");
+                return;
+            }
             props.onBack();
-
         } catch (error) {
-
-            console.error(
-                "Delete failed:",
-                error
-            );
+            setMessage(messageFor(error, "Unable to delete subject."));
         }
     }
 
     if (!subject) {
-
-        return (
-            <div style={{ padding: "40px" }}>
-                Loading...
-            </div>
-        );
+        return <div style={{ padding: "40px" }}>{message || "Loading..."}</div>;
     }
 
     if (editing) {
-
         return (
             <EditSubjectForm
-                subjectName={subject.subjectName}
-                description={subject.description}
-                onCancel={() =>
-                    setEditing(false)
-                }
+                subjectName={subject.subjectName ?? ""}
+                description={subject.description ?? ""}
+                onCancel={() => { setEditing(false); setMessage(""); }}
                 onUpdate={updateSubject}
+                saving={saving}
             />
         );
     }
 
     return (
-
         <div style={{ padding: "40px" }}>
-
-            <button
-                onClick={props.onBack}
-                style={{ marginBottom: "20px" }}
-            >
+            <button onClick={props.onBack} style={{ marginBottom: "20px" }}>
                 ← Back To Subject List
             </button>
-
-            <h1>
-                Subject Detail
-            </h1>
-
-            <p>
-                <strong>
-                    Subject Name:
-                </strong>{" "}
-                {subject.subjectName}
-            </p>
-
-            <p>
-                <strong>
-                    Description:
-                </strong>{" "}
-                {subject.description}
-            </p>
-
-            <p>
-                <strong>
-                    Created:
-                </strong>{" "}
-                {String(subject.createdAt)}
-            </p>
-
-            <p>
-                <strong>
-                    Updated:
-                </strong>{" "}
-                {String(subject.updatedAt)}
-            </p>
-
+            <h1>Subject Detail</h1>
+            {message && <p>{message}</p>}
+            <p><strong>Subject Name:</strong> {subject.subjectName}</p>
+            <p><strong>Description:</strong> {subject.description ?? ""}</p>
+            <p><strong>Created:</strong> {String(subject.createdAt)}</p>
+            <p><strong>Updated:</strong> {String(subject.updatedAt)}</p>
+            <button onClick={() => { setMessage(""); setEditing(true); }}>Edit Subject</button>
             <button
-                onClick={() =>
-                    setEditing(true)
-                }
-            >
-                Edit Subject
-            </button>
-
-            <button
-                onClick={confirmDeleteSubject}
+                onClick={() => {
+                    if (window.confirm("Delete this subject?")) void deleteSubject();
+                }}
                 style={{ marginLeft: "10px" }}
             >
                 Delete Subject
             </button>
-
         </div>
-
     );
 }
